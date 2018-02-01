@@ -79,7 +79,13 @@ using namespace std;
 
 void IntSet::resize(int new_capacity)
 {
-   //cout << "resize() is not implemented yet..." << endl;
+   if (new_capacity < used)
+      new_capacity = used;
+   if (new_capacity < 1)
+      new_capacity = 1;
+   used = new_capacity;
+
+   int * tmpData = new int[used];
 }
 
 IntSet::IntSet(int initial_capacity)
@@ -95,7 +101,7 @@ IntSet::IntSet(const IntSet& src)
 
 IntSet::~IntSet()
 {
-   delete data;
+   delete [] data;
 }
 
 IntSet& IntSet::operator=(const IntSet& rhs)
@@ -150,7 +156,7 @@ IntSet IntSet::unionWith(const IntSet& otherIntSet) const
    IntSet resultIntSet = *this;
    int unionSize = used + ( resultIntSet.subtract(*this) ).used;
    if (unionSize <= resultIntSet.used)
-      resultIntSet.resize(unionSize);
+      resultIntSet.resize(int(unionSize * 1.5) + 1);
 
    for (int i = 0; i < otherIntSet.size(); ++i)
       if (!resultIntSet.contains(otherIntSet.data[i]))
