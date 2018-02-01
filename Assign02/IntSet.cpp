@@ -79,23 +79,23 @@ using namespace std;
 
 void IntSet::resize(int new_capacity)
 {
-   cout << "resize() is not implemented yet..." << endl;
+   //cout << "resize() is not implemented yet..." << endl;
 }
 
 IntSet::IntSet(int initial_capacity)
 {
-   cout << "IntSet(...) is not implemented yet..." << endl;
+   //data = new[initial_capacity];
 }
 
 IntSet::IntSet(const IntSet& src)
 {
-   cout << "copy constructor is not implemented yet..." << endl;
+   //cout << "copy constructor is not implemented yet..." << endl;
 }
 
 
 IntSet::~IntSet()
 {
-   cout << "destructor is not implemented yet..." << endl;
+   delete data;
 }
 
 IntSet& IntSet::operator=(const IntSet& rhs)
@@ -106,30 +106,37 @@ IntSet& IntSet::operator=(const IntSet& rhs)
 
 int IntSet::size() const
 {
-   cout << "size() is not implemented yet..." << endl;
-   return 0; // dummy value returned
+   return used;
 }
 
 bool IntSet::isEmpty() const
 {
-   cout << "isEmpty() is not implemented yet..." << endl;
-   return false; // dummy value returned
+   return (used == 0);
 }
 
 bool IntSet::contains(int anInt) const
 {
-   cout << "contains() is not implemented yet..." << endl;
-   return false; // dummy value returned
+   for (int i = 0; i < used; ++i)
+      if (data[i] == anInt)
+         return true;
+
+   return false;
 }
 
 bool IntSet::isSubsetOf(const IntSet& otherIntSet) const
 {
-   cout << "isSubsetOf() is not implemented yet..." << endl;
-   return false; // dummy value returned
+   if (isEmpty())
+      return true;
+
+   for (int i = 0; i < used; ++i)
+      if (!otherIntSet.contains(data[i]))
+         return false;
+
+   return true;
 }
 
 void IntSet::DumpData(ostream& out) const
-{  // already implemented ... DON'T change anything
+{
    if (used > 0)
    {
       out << data[0];
@@ -140,25 +147,32 @@ void IntSet::DumpData(ostream& out) const
 
 IntSet IntSet::unionWith(const IntSet& otherIntSet) const
 {
-   cout << "unionWith() is not implemented yet..." << endl;
-   return IntSet(); // dummy IntSet object returned
+//   cout << "unionWith() is not implemented yet..." << endl;
+//   return IntSet(); // dummy IntSet object returned
 }
 
 IntSet IntSet::intersect(const IntSet& otherIntSet) const
 {
-   cout << "intersect() is not implemented yet..." << endl;
-   return IntSet(); // dummy IntSet object returned
+   IntSet resultIntSet = *this;
+   for (int i = 0; i < used; i++)
+      if (!otherIntSet.contains(data[i]))
+         resultIntSet.remove(data[i]);
+
+   return resultIntSet;
 }
 
 IntSet IntSet::subtract(const IntSet& otherIntSet) const
 {
-   cout << "subtract() is not implemented yet..." << endl;
-   return IntSet(); // dummy IntSet object returned
+   IntSet resultIntSet = *this;
+   for (int i = 0; i < otherIntSet.size(); ++i)
+      resultIntSet.remove(otherIntSet.data[i]);
+
+   return resultIntSet;
 }
 
 void IntSet::reset()
 {
-   cout << "reset() is not implemented yet..." << endl;
+   used = 0;
 }
 
 bool IntSet::add(int anInt)
@@ -169,8 +183,22 @@ bool IntSet::add(int anInt)
 
 bool IntSet::remove(int anInt)
 {
-   cout << "remove() is not implemented yet..." << endl;
-   return false; // dummy value returned
+   if (!contains(anInt))
+      return false;
+
+   // find the element index
+   int foundIdx = 0;
+   while (data[foundIdx] != anInt)
+   {
+      foundIdx++;
+   }
+
+   // overwrite and move elements beyond index
+   for (int j = foundIdx; j < used-1; ++j)
+      data[j] = data[j + 1];
+   used--;
+
+   return true;
 }
 
 bool operator==(const IntSet& is1, const IntSet& is2)
