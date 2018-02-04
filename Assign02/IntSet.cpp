@@ -91,14 +91,14 @@ void IntSet::resize(int new_capacity)
    data = tmpData;
 }
 
-IntSet::IntSet(int initial_capacity) : capacity(initial_capacity), len(0)
+IntSet::IntSet(int initial_capacity) : capacity(initial_capacity), used(0)
 {
    if (capacity < DEFAULT_CAPACITY)
       capacity = DEFAULT_CAPACITY;
    data = new int[initial_capacity];
 }
 
-IntSet::IntSet(const IntSet& src) : capacity(src.capacity), len(src.len)
+IntSet::IntSet(const IntSet& src) : capacity(src.capacity), used(src.used)
 {
    data = new int[capacity];
    for(int i = 0; i < capacity; i++)
@@ -121,7 +121,7 @@ IntSet& IntSet::operator=(const IntSet& rhs)
       delete [] data;
       data = tmpData;
       capacity = rhs.capacity;
-      len = rhs.len;
+      used = rhs.used;
    }
    return *this;
 }
@@ -238,7 +238,7 @@ bool IntSet::remove(int anInt)
 
 bool operator==(const IntSet& is1, const IntSet& is2)
 {
-   if (is1.len != is2.len)
+   if (is1.used != is2.used)
       return false;
 
    IntSet testSet = is1.subtract(is2);
