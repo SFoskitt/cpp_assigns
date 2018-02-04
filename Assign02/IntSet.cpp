@@ -95,7 +95,7 @@ IntSet::IntSet(int initial_capacity) : capacity(initial_capacity), used(0)
 {
    if (capacity < DEFAULT_CAPACITY)
       capacity = DEFAULT_CAPACITY;
-   data = new int[initial_capacity];
+   data = new int[capacity];
 }
 
 IntSet::IntSet(const IntSet& src) : capacity(src.capacity), used(src.used)
@@ -104,7 +104,6 @@ IntSet::IntSet(const IntSet& src) : capacity(src.capacity), used(src.used)
    for(int i = 0; i < capacity; i++)
       data[i] = src.data[i];
 }
-
 
 IntSet::~IntSet()
 {
@@ -170,9 +169,9 @@ void IntSet::DumpData(ostream& out) const
 IntSet IntSet::unionWith(const IntSet& otherIntSet) const
 {
    IntSet resultIntSet = *this;
-   int unionSize = used + ( resultIntSet.subtract(*this) ).used;
-   if (unionSize <= resultIntSet.used)
-      resultIntSet.resize(int(unionSize * 1.5) + 1);
+   int unionSize = used + ( otherIntSet.subtract(*this) ).used;
+   if (unionSize < resultIntSet.capacity)
+      resultIntSet.resize(int(1.5*capacity) + 1);
 
    for (int i = 0; i < otherIntSet.size(); ++i)
       if (!resultIntSet.contains(otherIntSet.data[i]))
@@ -210,6 +209,9 @@ bool IntSet::add(int anInt)
    if (contains(anInt))
       return false;
 
+   if (used == capacity)
+      resize(int(1.5*capacity) + 1);
+
    data[used] = anInt;
    used++;
 
@@ -238,7 +240,7 @@ bool IntSet::remove(int anInt)
 
 bool operator==(const IntSet& is1, const IntSet& is2)
 {
-   if (is1.used != is2.used)
+   if (is1.size() != is2.size())
       return false;
 
    IntSet testSet = is1.subtract(is2);
