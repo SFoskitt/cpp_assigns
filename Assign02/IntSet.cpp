@@ -84,18 +84,25 @@ void IntSet::resize(int new_capacity)
    if (new_capacity < 1)
       new_capacity = 1;
    used = new_capacity;
-
-   int * tmpData = new int[used];
+   int* tmpData = new int[used];
+   for(int i = 0; i < used; i++)
+      tmpData[i] = data[i];
+   delete [] data;
+   data = tmpData;
 }
 
-IntSet::IntSet(int initial_capacity)
+IntSet::IntSet(int initial_capacity) : capacity(initial_capacity), len(0)
 {
-   //data = new[initial_capacity];
+   if (capacity < DEFAULT_CAPACITY)
+      capacity = DEFAULT_CAPACITY;
+   data = new int[initial_capacity];
 }
 
-IntSet::IntSet(const IntSet& src)
+IntSet::IntSet(const IntSet& src) : capacity(src.capacity), len(src.len)
 {
-   //cout << "copy constructor is not implemented yet..." << endl;
+   data = new int[capacity];
+   for(int i = 0; i < capacity; i++)
+      data[i] = src.data[i];
 }
 
 
@@ -106,7 +113,16 @@ IntSet::~IntSet()
 
 IntSet& IntSet::operator=(const IntSet& rhs)
 {
-   cout << "operator=() is not implemented yet..." << endl;
+   if (this != &rhs)
+   {
+      int* tmpData = new int[rhs.capacity];
+      for (int i = 0; i < rhs.capacity; i++)
+         tmpData[i] = rhs.data[i];
+      delete [] data;
+      data = tmpData;
+      capacity = rhs.capacity;
+      len = rhs.len;
+   }
    return *this;
 }
 
@@ -191,8 +207,13 @@ void IntSet::reset()
 
 bool IntSet::add(int anInt)
 {
-   cout << "add() is not implemented yet..." << endl;
-   return false; // dummy value returned
+   if (contains(anInt))
+      return false;
+
+   data[used] = anInt;
+   used++;
+
+   return true;
 }
 
 bool IntSet::remove(int anInt)
@@ -217,6 +238,9 @@ bool IntSet::remove(int anInt)
 
 bool operator==(const IntSet& is1, const IntSet& is2)
 {
-   cout << "operator==() is not implemented yet..." << endl;
-   return false; // dummy value returned
+   if (is1.len != is2.len)
+      return false;
+
+   IntSet testSet = is1.subtract(is2);
+   return testSet.isEmpty();
 }
