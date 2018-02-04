@@ -83,8 +83,8 @@ void IntSet::resize(int new_capacity)
       new_capacity = used;
    if (new_capacity < 1)
       new_capacity = 1;
-   used = new_capacity;
-   int* tmpData = new int[used];
+   capacity = new_capacity;
+   int* tmpData = new int[new_capacity];
    for(int i = 0; i < used; i++)
       tmpData[i] = data[i];
    delete [] data;
@@ -169,9 +169,10 @@ void IntSet::DumpData(ostream& out) const
 IntSet IntSet::unionWith(const IntSet& otherIntSet) const
 {
    IntSet resultIntSet = *this;
+
    int unionSize = used + ( otherIntSet.subtract(*this) ).used;
    if (unionSize < resultIntSet.capacity)
-      resultIntSet.resize(int(1.5*capacity) + 1);
+      resultIntSet.resize(int(1.5 * capacity) + 1);
 
    for (int i = 0; i < otherIntSet.size(); ++i)
       if (!resultIntSet.contains(otherIntSet.data[i]))
