@@ -81,7 +81,7 @@ void IntSet::resize(int new_capacity)
 {
    if (new_capacity < used)
       new_capacity = used;
-   if (new_capacity < 1)`
+   if (new_capacity < 1)
       new_capacity = 1;
    capacity = new_capacity;
    int* tmpData = new int[new_capacity];

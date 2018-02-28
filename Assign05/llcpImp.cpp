@@ -72,56 +72,6 @@ void InsertSortedUp(Node*& headPtr, int value)
       headPtr = newNodePtr;
    else
       precursor->link = newNodePtr;
-
-///////////////////////////////////////////////////////////
-/* using-only-cursor (no precursor) version
-Node *newNodePtr = new Node;
-newNodePtr->data = value;
-//newNodePtr->link = 0;
-//if (headPtr == 0)
-//   headPtr = newNodePtr;
-//else if (headPtr->data >= value)
-//{
-//   newNodePtr->link = headPtr;
-//   headPtr = newNodePtr;
-//}
-if (headPtr == 0 || headPtr->data >= value)
-{
-newNodePtr->link = headPtr;
-headPtr = newNodePtr;
-}
-//else if (headPtr->link == 0)
-//   head->link = newNodePtr;
-else
-{
-Node *cursor = headPtr;
-while (cursor->link != 0 && cursor->link->data < value)
-cursor = cursor->link;
-//if (cursor->link != 0)
-//   newNodePtr->link = cursor->link;
-newNodePtr->link = cursor->link;
-cursor->link = newNodePtr;
-}
-
-////////////////// commented lines removed //////////////////
-
-Node *newNodePtr = new Node;
-newNodePtr->data = value;
-if (headPtr == 0 || headPtr->data >= value)
-{
-newNodePtr->link = headPtr;
-headPtr = newNodePtr;
-}
-else
-{
-Node *cursor = headPtr;
-while (cursor->link != 0 && cursor->link->data < value)
-cursor = cursor->link;
-newNodePtr->link = cursor->link;
-cursor->link = newNodePtr;
-}
-*/
-///////////////////////////////////////////////////////////
 }
 
 bool DelFirstTargetNode(Node*& headPtr, int target)
@@ -273,10 +223,10 @@ void MakeDistinctMirrorPairs(Node*& headPtr)
       return;
    }
 
-   while (outerPtr != mirrorPtr)   // outer loop, from head to mirror point
+   while (outerPtr != mirrorPtr)
    {
       count = 0;
-      while (innerPtr != mirrorPtr) // inner loop, from head to mirror point
+      while (innerPtr != mirrorPtr)
       {
          Node *nextInner = innerPtr->link;
          if(outerPtr->data == nextInner->data)
@@ -313,7 +263,6 @@ void MakeDistinctMirrorPairs(Node*& headPtr)
             }
          }
          innerPtr = innerPtr->link;
-         ShowAll(cout, headPtr);
       }
 
       if (count == 0)
@@ -325,8 +274,7 @@ void MakeDistinctMirrorPairs(Node*& headPtr)
          newNodePtr->link = tmpPtr;
       }
       outerPtr = outerPtr->link;
-      innerPtr = outerPtr;
-      ShowAll(cout, headPtr);
+      innerPtr = headPtr;
    }
    return;
 }
