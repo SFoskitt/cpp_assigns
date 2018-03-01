@@ -196,17 +196,15 @@ void ListClear(Node*& headPtr, int noMsg)
 void MakeDistinctMirrorPairs(Node*& headPtr)
 {
    Node *outerPtr = headPtr,
-      *mirrorPtr = headPtr,
-      *innerPtr = headPtr,
-      *thisPtr = headPtr;
+         *innerPtr = headPtr,
+         *thisPtr = headPtr,
+         *mirrorPtr = 0;
 
    int count = 0;
    int length = 0;
    while (thisPtr != 0)
    {
       length++;
-      if (thisPtr->link == 0)
-         mirrorPtr = thisPtr;
       thisPtr = thisPtr->link;
    }
 
@@ -223,43 +221,33 @@ void MakeDistinctMirrorPairs(Node*& headPtr)
       return;
    }
 
-   while (outerPtr != mirrorPtr)
+   while (outerPtr != 0)
    {
       count = 0;
-      while (innerPtr != mirrorPtr)
+      while (innerPtr != 0)
       {
          Node *nextInner = innerPtr->link;
-         if(outerPtr->data == nextInner->data)
+         if(nextInner->data == outerPtr->data)
          {
             count++;
             if (count == 1)
             {
-               if (nextInner == mirrorPtr)
-               {
-                  mirrorPtr = innerPtr;
-                  break;
-               }
-               else
-               {
-                  innerPtr->link = nextInner->link;
+               // move to the mirror list
+               // if mirrorPtr == 0
+                  // mirrorPtr = nextInner;  // first node on mirror list
+                  // innerPtr->link = nextInner->link;
+               // else
                   Node *tmpPtr = mirrorPtr->link;
                   mirrorPtr->link = nextInner;
                   nextInner->link = tmpPtr;
-               }
             }
 
-            if (count > 1 && nextInner == mirrorPtr)
+            if (count > 1)
             {
-               if (nextInner == mirrorPtr)
-               {
-                  innerPtr->link = mirrorPtr->link;
-                  mirrorPtr = innerPtr;
-                  break;
-               }
-               else
-               {
-                  innerPtr->link = nextInner->link;
-               }
+               // delete
+//                  innerPtr->link = mirrorPtr->link;
+//                  mirrorPtr = innerPtr;
+//                  innerPtr->link = nextInner->link;
             }
          }
          innerPtr = innerPtr->link;
@@ -267,14 +255,102 @@ void MakeDistinctMirrorPairs(Node*& headPtr)
 
       if (count == 0)
       {
-         Node *tmpPtr = mirrorPtr->link;
-         Node *newNodePtr = new Node;
-         newNodePtr->data = outerPtr->data;
-         mirrorPtr->link = newNodePtr;
-         newNodePtr->link = tmpPtr;
+//         Node *tmpPtr = mirrorPtr->link;
+//         Node *newNodePtr = new Node;
+//         newNodePtr->data = outerPtr->data;
+//         mirrorPtr->link = newNodePtr;
+//         newNodePtr->link = tmpPtr;
       }
+      ShowAll(cout, headPtr);
       outerPtr = outerPtr->link;
-      innerPtr = headPtr;
+      innerPtr = outerPtr;
    }
    return;
 }
+
+//void MakeDistinctMirrorPairs(Node*& headPtr)
+//{
+//   Node *outerPtr = headPtr,
+//      *innerPtr = headPtr,
+//      *mirrorPtr = headPtr,
+//      *thisPtr = headPtr;
+//
+//   int count = 0;
+//   int length = 0;
+//   while (thisPtr != 0)
+//   {
+//      length++;
+//      if (thisPtr->link == 0)
+//         mirrorPtr = thisPtr;
+//      thisPtr = thisPtr->link;
+//   }
+//
+//   if (length == 0)
+//   {
+//      return;
+//   }
+//
+//   if (length == 1)
+//   {
+//      Node *newNodePtr = new Node;
+//      newNodePtr->data = headPtr->data;
+//      headPtr->link = newNodePtr;
+//      return;
+//   }
+//
+//   while (outerPtr != mirrorPtr)
+//   {
+//      count = 0;
+//      while (innerPtr != mirrorPtr)
+//      {
+//         Node *nextInner = innerPtr->link;
+//         if(outerPtr->data == nextInner->data)
+//         {
+//            count++;
+//            if (count == 1)
+//            {
+//               if (nextInner == mirrorPtr)
+//               {
+//                  mirrorPtr = innerPtr;
+//                  break;
+//               }
+//               else
+//               {
+//                  innerPtr->link = nextInner->link;
+//                  Node *tmpPtr = mirrorPtr->link;
+//                  mirrorPtr->link = nextInner;
+//                  nextInner->link = tmpPtr;
+//               }
+//            }
+//
+//            if (count > 1)
+//            {
+//               if (nextInner == mirrorPtr)
+//               {
+//                  innerPtr->link = mirrorPtr->link;
+//                  mirrorPtr = innerPtr;
+//                  break;
+//               }
+//               else
+//               {
+//                  innerPtr->link = nextInner->link;
+//               }
+//            }
+//         }
+//         innerPtr = innerPtr->link;
+//      }
+//
+//      if (count == 0)
+//      {
+//         Node *tmpPtr = mirrorPtr->link;
+//         Node *newNodePtr = new Node;
+//         newNodePtr->data = outerPtr->data;
+//         mirrorPtr->link = newNodePtr;
+//         newNodePtr->link = tmpPtr;
+//      }
+//      ShowAll(cout, headPtr);
+//      outerPtr = outerPtr->link;
+//      innerPtr = outerPtr;
+//   }
+//   return;
+//}
