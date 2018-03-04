@@ -16,7 +16,8 @@ namespace CS3358_SP18_A5P2
          cNodePtr = cListHead;
          ++count;
       }
-      cout << "Dynamic memory for " << count << " CNodes freed \n" << endl;
+      cout << "Dynamic memory for " << count << " CNodes freed"
+           << endl;
    }
 
    void Destroy_pList(PNode*& pListHead)
@@ -31,10 +32,10 @@ namespace CS3358_SP18_A5P2
          pNodePtr = pListHead;
          ++count;
       }
-      cout << "Dynamic memory for " << count << " PNodes freed \n" << endl;
+      cout << "Dynamic memory for " << count << " PNodes freed"
+           << endl;
    }
 
-   // do depth-first traversal and print data
    void ShowAll_DF(PNode* pListHead, ostream& outs)
    {
       while (pListHead != 0)
@@ -42,7 +43,7 @@ namespace CS3358_SP18_A5P2
          CNode* cListHead = pListHead->data;
          while (cListHead != 0)
          {
-            outs << cListHead->data << " ";
+            outs << cListHead->data << "  ";
             cListHead = cListHead->link;
          }
          pListHead = pListHead->link;
@@ -68,23 +69,11 @@ namespace CS3358_SP18_A5P2
       {
          CNode* thing = bf_queue.front();
          bf_queue.pop();
-         outs << thing->data << " ";
+         outs << thing->data << "  ";
          if(thing->link)
          {
             bf_queue.push(thing->link);
          }
       }
-
-//      for (int i = 0; i < 5; i++)
-//      {
-//         CNode* tmpPtr = 0;
-//         bf_queue.push(tmpPtr);
-//      }
-//
-//      for (int j = 0; j < 5; j++)
-//      {
-//         outs << "front: ", bf_queue.front();
-//         bf_queue.pop();
-//      }
    }
 }
