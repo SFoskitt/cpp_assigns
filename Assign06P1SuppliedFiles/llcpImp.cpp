@@ -271,6 +271,5 @@ void SortedMergeRecur(Node*& xPtr, Node*& yPtr, Node*& zPtr)
       yPtr = yPtr->link;
    }
 
-   zPtr->link = 0;
    SortedMergeRecur(xPtr, yPtr, zPtr->link);
 }
