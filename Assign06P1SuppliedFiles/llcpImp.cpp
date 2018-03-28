@@ -273,37 +273,4 @@ void SortedMergeRecur(Node*& xPtr, Node*& yPtr, Node*& zPtr)
 
    zPtr->link = 0;
    SortedMergeRecur(xPtr, yPtr, zPtr->link);
-
-//Node*& headX, Node*& headY, Node*& headZ
-
-//   if (headX == 0 && headY == 0) return;
-//
-//   if (headX != 0 && headY != 0)
-//   {
-//      if(headX->data > headY->data)
-//      {
-//         headZ = headY;
-//         headY = headY->link;
-//         headZ->link = 0;
-//      }
-//      else
-//      {
-//         headZ = headX;
-//         headX = headX->link;
-//         headZ->link = 0;
-//      }
-//   }
-//   else if (headX == 0 && headY != 0)
-//   {
-//      headZ = headY;
-//      headY = headY->link;
-//      headZ->link = 0;
-//   }
-//   else if (headX != 0 && headY == 0)
-//   {
-//      headZ = headX;
-//      headX = headX->link;
-//      headZ->link = 0;
-//   }
-//   SortedMergeRecur(headX, headY, headZ->link);
 }
