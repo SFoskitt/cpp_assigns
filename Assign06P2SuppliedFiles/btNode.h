@@ -1,6 +1,5 @@
 #ifndef BT_NODE_H
 #define BT_NODE_H
-
 struct btNode
 {
    int data;

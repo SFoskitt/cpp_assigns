@@ -34,12 +34,10 @@ bool bst_insert(btNode* bst_root, int insVal)
 {
   while(bst_root->left && bst_root->right)
   {
-    //if(bst_node-> data > bst_root->data)
       if(insVal > bst_root->data)
       {
          if(bst_root->right != 0)
          {
-            // go to the right
             bst_root = bst_root->right;
          }
          else
@@ -49,9 +47,8 @@ bool bst_insert(btNode* bst_root, int insVal)
             bst_root->right = tmp;
             return true;
          }
-      }
-
-      if(insVal < bst_root->data)
+      } 
+      else
       {
          if(bst_root->left != 0)
          {
