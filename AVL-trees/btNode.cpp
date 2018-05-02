@@ -75,7 +75,6 @@ void tree_clear(btNode*& root)
 // (return value from the initiating call not captured/used)
 void avl_insert(btNode*& avl_root, int insInt)
 {
-    // if (avl_root == 0) return; OR if (height(avl_root) == 0) return;
    avl_insert_aux(avl_root, insInt);
 }
 
@@ -85,29 +84,44 @@ void avl_insert(btNode*& avl_root, int insInt)
 // (for use by ancestor nodes to correct balance factors)
 int avl_insert_aux(btNode*& avl_root, int insInt)
 {
-    // to be filled in as part of AssignOpt01
     //Adding an item to an empty tree increases the height by 1.
     //Adding an item that matches an existing item leaves the tree unchanged.
     // returns either 0 or 1 to indicate a change in the bf (height)
 
-    // if insInt < avl_root->data
-        // avl_root->left = avl_insert_aux(avl_root->left, insInt);
-    // else
-        // avl_root->right = avl_insert_aux(avl_root->right, insInt);
-
-
+    if(avl_root == 0){
+        avl_root->data = insInt;
+        return 1;
+    } else if(insInt < avl_root->data) {
+        int result = avl_insert_aux(avl_root->left, insInt);
+        if (result == 1){
+            avl_root->bf = height(avl_root);
+            if (avl_root->bf < -1){
+                rebalanceL(avl_root->left);
+            }
+        }
+    } else if(insInt > avl_root->data){
+        int result = avl_insert_aux(avl_root->right, insInt);
+        if (result == 1){
+            avl_root->bf = height(avl_root);
+            if (avl_root->bf > 1){
+                rebalanceR(avl_root->right);
+            }
+        }
+    }
+    return 0;
 }
 
 // rebalances an out-of-balance node with taller LST
 // does single or double rotation depending on left child's bf
 void rebalanceL(btNode*& avl_root)
 {
-    if(avl_root->left->bf == -1){
-        rotateR(avl_root->left);
-    }
-    if(avl_root->left->bf < -1){
-        rotateR(avl_root->left);
-        rotateR(avl_root->left);
+    int bf = height(avl_root->right);
+    if (bf > 0){
+        btNode* tmp = avl_root->right;
+        rotateL(tmp);
+        rotateR(avl_root);
+    } else {
+        rotateR(avl_root);
     }
 }
 
@@ -115,13 +129,13 @@ void rebalanceL(btNode*& avl_root)
 // does single or double rotation depending on right child's bf
 void rebalanceR(btNode*& avl_root)
 {
-    // could be == 2 and > 2
-    if(avl_root->left->bf == 1){
-        rotateL(avl_root->right);
-    }
-    if(avl_root->left->bf > 1){
-        rotateL(avl_root->right);
-        rotateL(avl_root->right);
+    int bf = height(avl_root->left);
+    if (bf > 0){
+        rotateL(avl_root);
+    } else {
+        btNode* tmp = avl_root->left;
+        rotateR(tmp);
+        rotateL(avl_root);
     }
 }
 
